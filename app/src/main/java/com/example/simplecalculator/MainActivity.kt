@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
         var result:String = "0"
         var afterSum:String = "0"
         var finalResult:String = "0"
+        var operation = ""
 
 
 
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
             }
             result+=0
             binding.resultText.text = result.toLong().toString()
+
         }
 
         binding.btn1.setOnClickListener {
@@ -103,36 +105,59 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnsum.setOnClickListener {
-            if(finalResult != "0"){
+            if(operation == "=" && finalResult != "0"){
                 afterSum = finalResult
-            }else{
-                afterSum = result
+                binding.textDisplay.text = finalResult.toLong().toString() + "+"
+            }else if(operation == "+" && result != "0"){
+                afterSum = (afterSum.toLong() + result.toLong()).toString()
+                if(binding.textDisplay.text.length <35){
+                    binding.textDisplay.text = binding.textDisplay.text.toString() + result.toLong().toString() + "+"
+                }else{
+                    binding.textDisplay.text = afterSum + "+"
+                }
+
+                binding.resultText.text = afterSum
+            }else {
+                if(result != "0"){
+                    afterSum = result
+                    binding.textDisplay.text = result.toLong().toString() + "+"
+                }
+
             }
 
+
+            operation = "+"
             result = "0"
 
         }
 
         binding.btnresult.setOnClickListener {
-            var needToClear = true
-            if(finalResult !="0"){
-                needToClear = false
-            }
-            if(needToClear){
+
+            if(operation != "=" && result != "0"){
             finalResult = (result.toLong() + afterSum.toLong()).toString()
             binding.resultText.text = finalResult
+                if(binding.textDisplay.text.length < 35){
+                    binding.textDisplay.text =  binding.textDisplay.text.toString() + result.toLong().toString() + "=" + finalResult
+                }else{
+                    binding.textDisplay.text = finalResult
+                }
+
 
                 result = "0"
                 afterSum = "0"
             }
 
+            operation = "="
         }
 
         binding.btnreset.setOnClickListener {
+
             result = "0"
             afterSum = "0"
             finalResult = "0"
             binding.resultText.text = "0"
+            binding.textDisplay.text = ""
+            operation = "C"
         }
 
     }
